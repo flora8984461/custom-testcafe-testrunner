@@ -130,6 +130,20 @@ function deactivate() {
 }
 exports.deactivate = deactivate;
 class TestCafeTestController {
+    runTask() {
+        vscode.window.showInformationMessage('The task: Get typescript warning / errors is running, please check the terminal to see the output');
+        vscode.commands.executeCommand("workbench.action.tasks.runTask", "Get typescript warning / errors");
+        // if (vscode.workspace.workspaceFolders) {
+        // 	let task = new vscode.Task(
+        // 		{ type: 'shell', task: 'Get typescript warning / errors' },
+        // 		vscode.workspace.workspaceFolders[0],
+        // 		'Get typescript warning / errors',
+        // 		'shell',
+        // 		new vscode.ShellExecution('yarn tsc; .\\removeJsFiles.ps1')
+        // 	  );
+        // 	vscode.tasks.executeTask(task);
+        // }
+    }
     runTests(browser, isPortable = false) {
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -148,6 +162,7 @@ class TestCafeTestController {
         var textBeforeSelection = document.getText(new vscode.Range(0, 0, selection.end.line + 1, 0));
         var [type, name] = this.findTestOrFixtureName(textBeforeSelection, cursorPosition);
         this.startTestRun({ name: browser, isPortable: isPortable }, document.fileName, type, name);
+        // this.runTask();
     }
     repeatLastRun() {
         if (!this.lastBrowser || !this.lastFile || (this.lastType !== "file" && !this.lastName)) {
@@ -265,8 +280,18 @@ class TestCafeTestController {
             internalConsoleOptions: "neverOpen",
             runtimeArgs: [
                 "--no-deprecation"
-            ]
+            ],
+            // preLaunchTask: "Get typescript warning / errors"
+            postDebugTask: "Get typescript warning / errors"
         });
+        // vscode.debug.startDebugging(wsFolder, {
+        // 	name: "Get typescript warning / errors",
+        // 	request: "yarn tsc; .\\removeJsFiles.ps1",
+        // 	type: "shell",
+        // 	cwd: workingDirectory,
+        // 	args: args,
+        // 	console: "integratedTerminal",
+        // });
         vscode.commands.executeCommand('setContext', 'testcaferunner.canRerun', true);
     }
     dispose() {

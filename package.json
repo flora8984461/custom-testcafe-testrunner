@@ -476,5 +476,6 @@
 	},
 	"dependencies": {
 		"testcafe-browser-tools": "^2.0.16"
-	}
+	},
+	"publisher": "yliu"
 }
